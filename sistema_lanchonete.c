@@ -30,8 +30,7 @@ typedef struct {
 
 void limpar_buffer() {
     int c;
-    while ((c = getchar()) != '\n' && c != EOF)
-        ;
+    while ((c = getchar()) != '\n' && c != EOF);
 }
 
 void menu(int *opcao) {
@@ -188,6 +187,29 @@ void mostrar_pedido(Pedido pedido) {
     }
 }
 
+void excluir_pedido(Pedidos *pedidos, int indice) {
+    int i;
+    for (i = indice; i < pedidos->qtd_pedidos - 1; i++)
+        pedidos->pedidos[i] = pedidos->pedidos[i + 1];
+    pedidos->qtd_pedidos--;
+    pedidos->pedidos = (Pedido *)realloc(pedidos->pedidos,
+                                         pedidos->qtd_pedidos * sizeof(Pedido));
+}
+
+int i_maior_valor(Pedidos pedidos) {
+    int i, i_maior_valor;
+    float maior_valor = 0, valor_final;
+    for (i = 0; i < pedidos.qtd_pedidos; i++) {
+        valor_final =
+            pedidos.pedidos[i].lanche.preco * pedidos.pedidos[i].quantidade;
+        if (valor_final > maior_valor) {
+            maior_valor = valor_final;
+            i_maior_valor = i;
+        }
+    }
+    return i_maior_valor;
+}
+
 int main() {
 
     int opcao, busca, indice;
@@ -255,7 +277,8 @@ int main() {
         case 5:
             system("clear");
             printf(CIANO "MAIOR VALOR\n\n" RESET);
-            mostrar_maior_valor(pedidos);
+            indice = i_maior_valor(pedidos);
+            mostrar_pedido(pedidos.pedidos[indice]);
             break;
 
         case 6:
