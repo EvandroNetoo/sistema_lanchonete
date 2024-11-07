@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <windows.h>
 
 #define STRING_LEN 51
 #define RESET "\x1b[0m"
@@ -33,8 +34,12 @@ void limpar_buffer() {
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
+void limpar_terminal() {
+    system(_WIN32? "cls" : "clear");
+}
+
 void menu(int *opcao) {
-    system("clear");
+    limpar_terminal();
     printf(CIANO "SISTEMA DE LANCHONETE\n" RESET);
     printf("1 - Inserir pedido\n");
     printf("2 - Pesquisar por número do pedido\n");
@@ -211,6 +216,7 @@ int i_maior_valor(Pedidos pedidos) {
 }
 
 int main() {
+    SetConsoleOutputCP(CP_UTF8);
 
     int opcao, busca, indice;
     char cliente[STRING_LEN];
@@ -224,14 +230,14 @@ int main() {
 
         switch (opcao) {
         case 1:
-            system("clear");
+            limpar_terminal();
             printf(CIANO "INSERIR PEDIDO\n\n" RESET);
             inserir_pedido(&pedidos);
             printf(GREEN "\nPedido inserido com sucesso.\n" RESET);
             break;
 
         case 2:
-            system("clear");
+            limpar_terminal();
             printf(CIANO "PESQUISAR POR NUMERO DO PEDIDO\n\n" RESET);
             input_numero_positivo('i', &busca, "Numero do pedido: ",
                                   "O número do pedido deve ser maior que 0.");
@@ -244,7 +250,7 @@ int main() {
             break;
 
         case 3:
-            system("clear");
+            limpar_terminal();
             printf(CIANO "PESQUISAR POR NOME\n\n" RESET);
             strcpy(cliente, input_string("Nome: "));
             indice = buscar_pedido(pedidos, cliente, 'c');
@@ -256,7 +262,7 @@ int main() {
             break;
 
         case 4:
-            system("clear");
+            limpar_terminal();
             printf(CIANO "ATUALIZAR QUANTIDADE\n\n" RESET);
             input_numero_positivo('i', &busca, "Numero do pedido: ",
                                   "O número do pedido deve ser maior que 0.");
@@ -275,14 +281,14 @@ int main() {
             break;
 
         case 5:
-            system("clear");
+            limpar_terminal();
             printf(CIANO "MAIOR VALOR\n\n" RESET);
             indice = i_maior_valor(pedidos);
             mostrar_pedido(pedidos.pedidos[indice]);
             break;
 
         case 6:
-            system("clear");
+            limpar_terminal();
             printf(CIANO "EXCLUIR PEDIDO\n\n" RESET);
             input_numero_positivo('i', &busca, "Numero do pedido: ",
                                   "O número do pedido deve ser maior que 0.");
@@ -296,7 +302,7 @@ int main() {
             break;
 
         case 7:
-            system("clear");
+            limpar_terminal();
             printf(CIANO "LISTA DE PEDIDOS\n\n" RESET);
             mostrar_pedidos(pedidos);
             break;
